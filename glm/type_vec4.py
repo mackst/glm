@@ -439,3 +439,14 @@ class Vec4(object):
     t = g
     p = b
     q = a
+
+    def __iter__(self):
+        return iter((self.x, self.y, self.z, self.w))
+
+    def __nonzero__(self):
+        return self.x == 0 and self.y == 0 and self.z == 0 and self.w == 0
+
+    def __str__(self):
+        return "Vec4(%.3f, %.3f, %.3f, %.3f)" % (self.x, self.y, self.z, self.w)
+
+    __repr__ = __str__
