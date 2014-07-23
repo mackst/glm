@@ -61,10 +61,13 @@ class Vec4(object):
                     self.z = inarg
                     self.w = inarg
             elif lenArgs == 2:
+                # TODO: implement one of the arg is vec3
+                # or two vec2 as args
                 self.x, self.y = args
                 self.z = .0
                 self.w = .0
             elif lenArgs == 3:
+                # TODO: implement one of the arg is vec2
                 self.x, self.y, self.z = args
                 self.w = .0
             elif lenArgs == 4:
