@@ -315,5 +315,82 @@ class Vec4(object):
         v = float(value)
         return Vec4(v / self.x, v / self.y, v / self.z, v / self.w)
 
+    def __neg__(self):
+        return Vec4(-self.x, -self.y, -self.z, -self.w)
+
+    def __eq__(self, other):
+        return self.x == other.x and self.y == other.y and self.z == other.z and self.w == other.w
+
+    def __ne__(self, other):
+        return self.x != other.x and self.y != other.y and self.z != other.z and self.w != other.w
+
+    def __mod__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x % value.x, self.y % value.y,
+                        self.z % value.z, self.w % value.w)
+        else:
+            return Vec4(self.x % value, self.y % value,
+                        self.z % value, self.w % value)
+
+    def __rmod__(self, value):
+        return Vec4(value % self.x, value % self.y, value % self.z, value.w % self.w)
+
+    def __and__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x & value.x, self.y & value.y,
+                        self.z & value.z, self.w & value.w)
+        else:
+            return Vec4(self.x & value, self.y & value,
+                        self.z & value, self.w & value)
+
+    def __rand__(self, value):
+        return Vec4(value & self.x, value & self.y, value & self.z, value & self.w)
+
+    def __or__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x | value.x, self.y | value.y,
+                        self.z | value.z, self.w | value.w)
+        else:
+            return Vec4(self.x | value, self.y | value,
+                        self.z | value, self.w | value)
+
+    def __ror__(self, value):
+        return Vec4(value | self.x, value | self.y, value | self.z, value | self.w)
+
+    def __xor__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x ^ value.x, self.y ^ value.y,
+                        self.z ^ value.z, self.w ^ value.w)
+        else:
+            return Vec4(self.x ^ value, self.y ^ value,
+                        self.z ^ value, self.w ^ value)
+
+    def __rxor__(self, value):
+        return Vec4(value ^ self.x, value ^ self.y, value ^ self.z, value ^ self.w)
+
+    def __lshift__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x << value.x, self.y << value.y,
+                        self.z << value.z, self.w << value.w)
+        else:
+            return Vec4(self.x << value, self.y << value,
+                        self.z << value, self.w << value)
+
+    def __rlshift__(self, value):
+        return Vec4(value << self.x, value << self.y,
+                    value << self.z, value << self.w)
+
+    def __rshift__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x >> value.x, self.y >> value.y,
+                        self.z >> value.z, self.w >> value.w)
+        else:
+            return Vec4(self.x >> value, self.y >> value,
+                        self.z >> value, self.w >> value)
+
+    def __rrshift__(self, value):
+        return Vec4(value >> self.x, value >> self.y,
+                    value >> self.z, value >> self.w)
+
     def __invert__(self):
         return Vec4(~self.x, ~self.y, ~self.z, ~self.w)
