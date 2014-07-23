@@ -112,3 +112,169 @@ class Vec4(object):
 
         return super(Vec4, self).__setitem__(index, value)
 
+    def __iadd__(self, value):
+        if isinstance(value, Vec4):
+            self.x += value.x
+            self.y += value.y
+            self.z += value.z
+            self.w += value.w
+        else:
+            self.x += value
+            self.y += value
+            self.z += value
+            self.w += value
+        return self
+
+    def __isub__(self, value):
+        if isinstance(value, Vec4):
+            self.x -= value.x
+            self.y -= value.y
+            self.z -= value.z
+            self.w -= value.w
+        else:
+            self.x -= value
+            self.y -= value
+            self.z -= value
+            self.w -= value
+        return self
+
+    def __imul__(self, value):
+        if isinstance(value, Vec4):
+            self.x *= value.x
+            self.y *= value.y
+            self.z *= value.z
+            self.w *= value.w
+        else:
+            self.x *= value
+            self.y *= value
+            self.z *= value
+            self.w *= value
+        return self
+
+    def __idiv__(self, value):
+        if isinstance(value, Vec4):
+            self.x /= value.x
+            self.y /= value.y
+            self.z /= value.z
+            self.w /= value.w
+        else:
+            self.x /= value
+            self.y /= value
+            self.z /= value
+            self.w /= value
+        return self
+
+    def __itruediv__(self, value):
+        if isinstance(value, Vec4):
+            self.x /= float(value.x)
+            self.y /= float(value.y)
+            self.z /= float(value.z)
+            self.w /= float(value.w)
+        else:
+            self.x /= float(value)
+            self.y /= float(value)
+            self.z /= float(value)
+            self.w /= float(value)
+        return self
+
+    def __imod__(self, value):
+        if isinstance(value, Vec4):
+            self.x %= value.x
+            self.y %= value.y
+            self.z %= value.z
+            self.w %= value.w
+        else:
+            self.x %= value
+            self.y %= value
+            self.z %= value
+            self.w %= value
+        return self
+
+    def __iand__(self, value):
+        if isinstance(value, Vec4):
+            self.x &= value.x
+            self.y &= value.y
+            self.z &= value.z
+            self.w &= value.w
+        else:
+            self.x &= value
+            self.y &= value
+            self.z &= value
+            self.w &= value
+        return self
+
+    def __ior__(self, value):
+        if isinstance(value, Vec4):
+            self.x |= value.x
+            self.y |= value.y
+            self.z |= value.z
+            self.w |= value.w
+        else:
+            self.x |= value
+            self.y |= value
+            self.z |= value
+            self.w |= value
+        return self
+
+    def __ixor__(self, value):
+        if isinstance(value, Vec4):
+            self.x ^= value.x
+            self.y ^= value.y
+            self.z ^= value.z
+            self.w ^= value.w
+        else:
+            self.x ^= value
+            self.y ^= value
+            self.z ^= value
+            self.w ^= value
+        return self
+
+    def __ilshift__(self, value):
+        if isinstance(value, Vec4):
+            self.x <<= value.x
+            self.y <<= value.y
+            self.z <<= value.z
+            self.w <<= value.w
+        else:
+            self.x <<= value
+            self.y <<= value
+            self.z <<= value
+            self.w <<= value
+        return self
+
+    def __irshift__(self, value):
+        if isinstance(value, Vec4):
+            self.x >>= value.x
+            self.y >>= value.y
+            self.z >>= value.z
+            self.w >>= value.w
+        else:
+            self.x >>= value
+            self.y >>= value
+            self.z >>= value
+            self.w >>= value
+        return self
+
+    def __add__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x + value.x, self.y + value.y,
+                        self.z + value.z, self.w + value.w)
+        else:
+            return Vec4(self.x + value, self.y + value,
+                        self.z + value, self.w + value)
+
+    def __radd__(self, value):
+        return Vec4(value + self.x, value + self.y,
+                    value + self.z, value + self.w)
+
+    def __sub__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x - value.x, self.y - value.y,
+                        self.z - value.z, self.w - value.w)
+        else:
+            return Vec4(self.x - value, self.y - value,
+                        self.z - value, self.w - value)
+
+    def __rsub__(self, value):
+        return Vec4(value - self.x, value - self.y,
+                    value - self.z, value - self.w)
