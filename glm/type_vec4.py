@@ -450,3 +450,13 @@ class Vec4(object):
         return "Vec4(%.3f, %.3f, %.3f, %.3f)" % (self.x, self.y, self.z, self.w)
 
     __repr__ = __str__
+
+    # implement swizzle,
+    # etc, v.xxxx, v.arg, v.qpst
+    def __getattribute__(self, name):
+        # TODO: implement swizzle for vec2 and vec3
+        if len(name) == 4:
+            xyzw = (self.x, self.y, self.z, self.w) * 3
+            return Vec4([xyzw['xyzwrgbastpq'.index(i)] for i in name])
+
+        return super(Vec4, self).__getattribute__(name)
