@@ -111,7 +111,7 @@ class Vec4(object):
         elif index == 3 or index == -1:
             self.w = value
 
-        return super(Vec4, self).__setitem__(index, value)
+        #return super(Vec4, self).__setitem__(index, value)
 
     def __iadd__(self, value):
         if isinstance(value, Vec4):
