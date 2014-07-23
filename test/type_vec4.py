@@ -150,5 +150,38 @@ class TestVec4(unittest.TestCase):
         self.assertEqual(sv.z, v.w, msg)
         self.assertEqual(sv.w, v.x, msg)
 
+    def test_indexGetNSet(self):
+        v = Vec4(1., 3., -1., 1.)
+
+        msg = 'index get attribute failure'
+        self.assertEqual(v[0], v.x, msg)
+        self.assertEqual(v[1], v.y, msg)
+        self.assertEqual(v[2], v.z, msg)
+        self.assertEqual(v[3], v.w, msg)
+        self.assertEqual(v[-1], v.w, msg)
+        self.assertEqual(v[-2], v.z, msg)
+        self.assertEqual(v[-3], v.y, msg)
+        self.assertEqual(v[-4], v.x, msg)
+        self.assertRaises(IndexError, lambda i: v[i], 4)
+
+        msg = 'index set attribute failure'
+        v[0] = 2.
+        v[1] = 1.
+        v[2] = 3.
+        v[3] = .0
+        self.assertEqual(v.x, 2., msg)
+        self.assertEqual(v.y, 1., msg)
+        self.assertEqual(v.z, 3., msg)
+        self.assertEqual(v.w, .0, msg)
+
+        v[-4] = -2.
+        v[-3] = -1.
+        v[-2] = -3.
+        v[-1] = 1.0
+        self.assertEqual(v.x, -2., msg)
+        self.assertEqual(v.y, -1., msg)
+        self.assertEqual(v.z, -3., msg)
+        self.assertEqual(v.w, 1.0, msg)
+
 if __name__ == '__main__':
     unittest.main()
