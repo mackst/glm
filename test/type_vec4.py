@@ -163,6 +163,7 @@ class TestVec4(unittest.TestCase):
         self.assertEqual(v[-3], v.y, msg)
         self.assertEqual(v[-4], v.x, msg)
         self.assertRaises(IndexError, lambda i: v[i], 4)
+        self.assertRaises(IndexError, lambda i: v[i], -5)
 
         msg = 'index set attribute failure'
         v[0] = 2.
