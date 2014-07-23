@@ -45,11 +45,12 @@ class Vec4(object):
                 elif isinstance(inarg, list) or isinstance(inarg, tuple):
                     il = []
                     if len(inarg) == 1:
-                        il = inarg[0] + [.0, .0, .0]
+                        il.append(inarg[0])
+                        il += [.0, .0, .0]
                     elif len(inarg) == 2:
-                        il = inarg[0:] + [.0, .0]
+                        il = list(inarg) + [.0, .0]
                     elif len(inarg) == 3:
-                        il = inarg[0:] + [.0,]
+                        il = list(inarg) + [.0,]
                     elif len(inarg) == 4:
                         il = inarg
                     else:
