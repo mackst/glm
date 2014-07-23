@@ -394,3 +394,48 @@ class Vec4(object):
 
     def __invert__(self):
         return Vec4(~self.x, ~self.y, ~self.z, ~self.w)
+
+    @property
+    def r(self):
+        '''r attribute'''
+        return self.x
+
+    @r.setter
+    def r(self, value):
+        '''set r attribute'''
+        self.x = value
+
+    @property
+    def g(self):
+        '''g attribute'''
+        return self.y
+
+    @g.setter
+    def g(self, value):
+        '''set g attribute'''
+        self.y = value
+
+    @property
+    def b(self):
+        '''b attribute'''
+        return self.z
+
+    @b.setter
+    def b(self, value):
+        '''set b attribute'''
+        self.z = value
+
+    @property
+    def a(self):
+        '''a attribute'''
+        return self.w
+
+    @a.setter
+    def a(self, value):
+        '''set a attribute'''
+        self.w = value
+
+    s = r
+    t = g
+    p = b
+    q = a
