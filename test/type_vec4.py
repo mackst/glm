@@ -114,5 +114,41 @@ class TestVec4(unittest.TestCase):
         self.assertEqual(v.z, -2.0, msg)
         self.assertEqual(v.w, 0.5, msg)
 
+    def test_swizzle(self):
+        v = Vec4(1., 3., 2., 1.)
+        msg = 'swizzle for vec4'
+
+        # xyzw swizzle
+        sv = v.yzwx
+        self.assertTrue(isinstance(sv, Vec4), msg)
+        self.assertEqual(sv.x, v.y, msg)
+        self.assertEqual(sv.y, v.z, msg)
+        self.assertEqual(sv.z, v.w, msg)
+        self.assertEqual(sv.w, v.x, msg)
+
+        # rgba swizzle
+        sv = v.gbar
+        self.assertTrue(isinstance(sv, Vec4), msg)
+        self.assertEqual(sv.r, v.y, msg)
+        self.assertEqual(sv.g, v.z, msg)
+        self.assertEqual(sv.b, v.w, msg)
+        self.assertEqual(sv.a, v.x, msg)
+
+        # stpq swizzle
+        sv = v.tpqs
+        self.assertTrue(isinstance(sv, Vec4), msg)
+        self.assertEqual(sv.s, v.y, msg)
+        self.assertEqual(sv.t, v.z, msg)
+        self.assertEqual(sv.p, v.w, msg)
+        self.assertEqual(sv.q, v.x, msg)
+
+        # mix all
+        sv = v.ybqr
+        self.assertTrue(isinstance(sv, Vec4), msg)
+        self.assertEqual(sv.x, v.y, msg)
+        self.assertEqual(sv.y, v.z, msg)
+        self.assertEqual(sv.z, v.w, msg)
+        self.assertEqual(sv.w, v.x, msg)
+
 if __name__ == '__main__':
     unittest.main()
