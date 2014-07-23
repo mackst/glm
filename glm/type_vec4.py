@@ -278,3 +278,42 @@ class Vec4(object):
     def __rsub__(self, value):
         return Vec4(value - self.x, value - self.y,
                     value - self.z, value - self.w)
+
+    def __mul__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x * value.x, self.y * value.y,
+                        self.z * value.z, self.w * value.w)
+        else:
+            return Vec4(self.x * value, self.y * value,
+                        self.z * value, self.w * value)
+
+    def __rmul__(self, value):
+        return Vec4(value * self.x, value * self.y,
+                    value * self.z, value * self.w)
+
+    def __div__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x / value.x, self.y / value.y,
+                        self.z / value.z, self.w / value.w)
+        else:
+            return Vec4(self.x / value, self.y / value,
+                        self.z / value, self.w / value)
+
+    def __rdiv__(self, value):
+        return Vec4(value / self.x, value / self.y,
+                    value / self.z, value / self.w)
+
+    def __truediv__(self, value):
+        if isinstance(value, Vec4):
+            return Vec4(self.x / float(value.x), self.y / float(value.y),
+                        self.z / float(value.z), self.w / float(value.w))
+        else:
+            return Vec4(self.x / float(value), self.y / float(value),
+                        self.z / float(value), self.w / float(value))
+
+    def __rtruediv__(self, value):
+        v = float(value)
+        return Vec4(v / self.x, v / self.y, v / self.z, v / self.w)
+
+    def __invert__(self):
+        return Vec4(~self.x, ~self.y, ~self.z, ~self.w)
