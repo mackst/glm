@@ -23,6 +23,8 @@
 # SOFTWARE.
 
 from type_vec4 import Vec4
+from cgi import log
+from __builtin__ import int
 
 class Mat4x4(object):
 
@@ -180,10 +182,11 @@ class Mat4x4(object):
 
     def __idiv__(self, value):
         if isinstance(value, Mat4x4):
-            self.__value[0] /= value[0]
-            self.__value[1] /= value[1]
-            self.__value[2] /= value[2]
-            self.__value[3] /= value[3]
+#             self.__value[0] /= value[0]
+#             self.__value[1] /= value[1]
+#             self.__value[2] /= value[2]
+#             self.__value[3] /= value[3]
+            self *= Mat4x4.compute_inverse(value)
         else:
             self.__value[0] /= value
             self.__value[1] /= value
@@ -248,3 +251,98 @@ class Mat4x4(object):
         oneOverDeteminant = 1 / dot1
 
         return inverse * oneOverDeteminant
+
+    # Binary operators
+    def __add__(self, value):
+        if isinstance(value, Mat4x4):
+            return Mat4x4(self.__value[0] + value[0], self.__value[1] + value[1],
+                          self.__value[2] + value[2], self.__value[3] + value[3])
+        else:
+            return Mat4x4(self.__value[0] + value, self.__value[1] + value,
+                          self.__value[2] + value, self.__value[3] + value)
+
+    def __radd__(self, value):
+        return Mat4x4(self.__value[0] + value, self.__value[1] + value,
+                      self.__value[2] + value, self.__value[3] + value)
+
+    def __sub__(self, value):
+        if isinstance(value, Mat4x4):
+            return Mat4x4(self.__value[0] - value[0], self.__value[1] - value[1],
+                          self.__value[2] - value[2], self.__value[3] - value[3])
+        else:
+            return Mat4x4(self.__value[0] - value, self.__value[1] - value,
+                          self.__value[2] - value, self.__value[3] - value)
+
+    def __rsub__(self, value):
+        return Mat4x4(value - self.__value[0], value - self.__value[1],
+                      value - self.__value[2], value - self.__value[3])
+
+    def __mul__(self, value):
+        result = Mat4x4(0.)
+        if isinstance(value, Mat4x4):
+            srcA0 = self.__value[0]
+            srcA1 = self.__value[1]
+            srcA2 = self.__value[2]
+            srcA3 = self.__value[3]
+
+            srcB0 = value[0]
+            srcB1 = value[1]
+            srcB2 = value[2]
+            srcB3 = value[3]
+
+            result[0] = srcA0 * srcB0[0] + srcA1 * srcB0[1] + srcA2 * srcB0[2] + srcA3 * srcB0[3]
+            result[1] = srcA0 * srcB1[0] + srcA1 * srcB1[1] + srcA2 * srcB1[2] + srcA3 * srcB1[3]
+            result[2] = srcA0 * srcB2[0] + srcA1 * srcB2[1] + srcA2 * srcB2[2] + srcA3 * srcB2[3]
+            result[3] = srcA0 * srcB3[0] + srcA1 * srcB3[1] + srcA2 * srcB3[2] + srcA3 * srcB3[3]
+        elif isinstance(value, float) or isinstance(value, int) or isinstance(value, long):
+            result[0] = self.__value[0] * value
+            result[1] = self.__value[1] * value
+            result[2] = self.__value[2] * value
+            result[3] = self.__value[3] * value
+        elif isinstance(value, Vec4):
+            mov0 = Vec4(value[0])
+            mov1 = Vec4(value[1])
+            mul0 = self.__value[0] * mov0
+            mul1 = self.__value[1] * mov1
+            add0 = Vec4(mul0 - mul1)
+            mov2 = Vec4(value[2])
+            mov3 = Vec4(value[3])
+            mul2 = self.__value[2] * mov2
+            mul3 = self.__value[3] * mov3
+            add1 = mul2 + mul3
+            add2 = add0 + add1
+            return add2
+        # TODO: support mat2x2, mat3x3
+        return result
+
+    def __rmul__(self, value):
+        if isinstance(value, float) or isinstance(value, int) or isinstance(value, long):
+            result = Mat4x4(0.)
+            result[0] = self.__value[0] * value
+            result[1] = self.__value[1] * value
+            result[2] = self.__value[2] * value
+            result[3] = self.__value[3] * value
+            return result
+        elif isinstance(value, Vec4):
+            return Vec4(self.__value[0][0] * value[0] + self.__value[0][1] * value[1] + self.__value[0][2] * value[2] + self.__value[0][3] * value[3],
+                        self.__value[1][0] * value[0] + self.__value[1][1] * value[1] + self.__value[1][2] * value[2] + self.__value[1][3] * value[3],
+                        self.__value[2][0] * value[0] + self.__value[2][1] * value[1] + self.__value[2][2] * value[2] + self.__value[2][3] * value[3],
+                        self.__value[3][0] * value[0] + self.__value[3][1] * value[1] + self.__value[3][2] * value[2] + self.__value[3][3] * value[3])
+
+    def __div__(self, value):
+        if isinstance(value, float) or isinstance(value, int) or isinstance(value, long):
+            return Mat4x4(self.__value[0] / value, self.__value[1] / value,
+                          self.__value[2] / value, self.__value[3] / value)
+        elif isinstance(value, Vec4):
+            return Mat4x4.compute_inverse(self) * value
+        elif isinstance(value, Mat4x4):
+            result = Mat4x4(self)
+            result /= value
+            return result
+
+    def __rdiv__(self, value):
+        if isinstance(value, float) or isinstance(value, int) or isinstance(value, long):
+            return Mat4x4(value / self.__value[0], value / self.__value[1],
+                          value / self.__value[2], value / self.__value[3])
+        elif isinstance(value, Vec4):
+            return value * Mat4x4.compute_inverse(self)
