@@ -346,3 +346,16 @@ class Mat4x4(object):
                           value / self.__value[2], value / self.__value[3])
         elif isinstance(value, Vec4):
             return value * Mat4x4.compute_inverse(self)
+
+    __truediv__ = __div__
+    __rtruediv__ = __rdiv__
+
+    def __neg__(self):
+        return Mat4x4(-self.__value[0], -self.__value[1],
+                      -self.__value[2], -self.__value[3])
+
+    def __eq__(self, other):
+        return self.__value[0] == other[0] and self.__value[1] == other[1] and self.__value[2] == other[2] and self.__value[3] == other[3]
+
+    def __neq__(self, other):
+        return self.__value[0] != other[0] and self.__value[1] != other[1] and self.__value[2] != other[2] and self.__value[3] != other[3]
