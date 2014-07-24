@@ -52,6 +52,7 @@ class Mat4x4(object):
             lenArgs = len(args)
             if lenArgs == 1:
                 m = args[0]
+                # TODO: implement argument is mat2x2, mat3x3, ...
                 if isinstance(m, Mat4x4):
                     v0 = m[0]
                     v1 = m[1]
@@ -137,3 +138,113 @@ class Mat4x4(object):
             self.__value[2] = value
         elif index == 3 or index == -1:
             self.__value[3] = value
+
+    def __iadd__(self, value):
+        if isinstance(value, Mat4x4):
+            self.__value[0] += value[0]
+            self.__value[1] += value[1]
+            self.__value[2] += value[2]
+            self.__value[3] += value[3]
+        else:
+            self.__value[0] += value
+            self.__value[1] += value
+            self.__value[2] += value
+            self.__value[3] += value
+        return self
+
+    def __isub__(self, value):
+        if isinstance(value, Mat4x4):
+            self.__value[0] -= value[0]
+            self.__value[1] -= value[1]
+            self.__value[2] -= value[2]
+            self.__value[3] -= value[3]
+        else:
+            self.__value[0] -= value
+            self.__value[1] -= value
+            self.__value[2] -= value
+            self.__value[3] -= value
+        return self
+
+    def __imul__(self, value):
+        if isinstance(value, Mat4x4):
+            self.__value[0] *= value[0]
+            self.__value[1] *= value[1]
+            self.__value[2] *= value[2]
+            self.__value[3] *= value[3]
+        else:
+            self.__value[0] *= value
+            self.__value[1] *= value
+            self.__value[2] *= value
+            self.__value[3] *= value
+        return self
+
+    def __idiv__(self, value):
+        if isinstance(value, Mat4x4):
+            self.__value[0] /= value[0]
+            self.__value[1] /= value[1]
+            self.__value[2] /= value[2]
+            self.__value[3] /= value[3]
+        else:
+            self.__value[0] /= value
+            self.__value[1] /= value
+            self.__value[2] /= value
+            self.__value[3] /= value
+        return self
+
+    __itruediv__ = __idiv__
+
+    @staticmethod
+    def compute_inverse(m):
+        coef00 = m[2][2] * m[3][3] - m[3][2] * m[2][3]
+        coef02 = m[1][2] * m[3][3] - m[3][2] * m[1][3]
+        coef03 = m[1][2] * m[2][3] - m[2][2] * m[1][3]
+
+        coef04 = m[2][1] * m[3][3] - m[3][1] * m[2][3]
+        coef06 = m[1][1] * m[3][3] - m[3][1] * m[1][3]
+        coef07 = m[1][1] * m[2][3] - m[2][1] * m[1][3]
+
+        coef08 = m[2][1] * m[3][2] - m[3][1] * m[2][2]
+        coef10 = m[1][1] * m[3][2] - m[3][1] * m[1][2]
+        coef11 = m[1][1] * m[2][2] - m[2][1] * m[1][2]
+
+        coef12 = m[2][0] * m[3][3] - m[3][0] * m[2][3]
+        coef14 = m[1][0] * m[3][3] - m[3][0] * m[1][3]
+        coef15 = m[1][0] * m[2][3] - m[2][0] * m[1][3]
+
+        coef16 = m[2][0] * m[3][2] - m[3][0] * m[2][2]
+        coef18 = m[1][0] * m[3][2] - m[3][0] * m[1][2]
+        coef19 = m[1][0] * m[2][2] - m[2][0] * m[1][2]
+
+        coef20 = m[2][0] * m[3][1] - m[3][0] * m[2][1]
+        coef22 = m[1][0] * m[3][1] - m[3][0] * m[1][1]
+        coef23 = m[1][0] * m[2][1] - m[2][0] * m[1][1]
+
+        fac0 = Vec4(coef00, coef00, coef02, coef03)
+        fac1 = Vec4(coef04, coef04, coef06, coef07)
+        fac2 = Vec4(coef08, coef08, coef10, coef11)
+        fac3 = Vec4(coef12, coef12, coef14, coef15)
+        fac4 = Vec4(coef16, coef16, coef18, coef19)
+        fac5 = Vec4(coef20, coef20, coef22, coef23)
+
+        v0 = Vec4(m[1][0], m[0][0], m[0][0], m[0][0])
+        v1 = Vec4(m[1][1], m[0][1], m[0][1], m[0][1])
+        v2 = Vec4(m[1][2], m[0][2], m[0][2], m[0][2])
+        v3 = Vec4(m[1][3], m[0][3], m[0][3], m[0][3])
+
+        inv0 = Vec4(v1 * fac0 - v2 * fac1 + v3 * fac2)
+        inv1 = Vec4(v0 * fac0 - v2 * fac3 + v3 * fac4)
+        inv2 = Vec4(v0 * fac1 - v1 * fac3 + v3 * fac5)
+        inv3 = Vec4(v0 * fac2 - v1 * fac4 + v2 * fac5)
+
+        signA = Vec4(1, -1, 1, -1)
+        signB = Vec4(-1, 1, -1, 1)
+        inverse = Mat4x4(inv0 * signA, inv1 * signB, inv2 * signA, inv3 * signB)
+
+        row0 = Vec4(inverse[0][0], inverse[1][0], inverse[2][0], inverse[3][0])
+
+        dot0 = Vec4(m[0] * row0)
+        dot1 = (dot0.x + dot0.y) + (dot0.z + dot0.w)
+
+        oneOverDeteminant = 1 / dot1
+
+        return inverse * oneOverDeteminant
