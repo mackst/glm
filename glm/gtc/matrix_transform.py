@@ -22,3 +22,30 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import math
+
+from glm.detail.type_mat4x4 import Mat4x4
+
+
+def perspective(fovy, aspect, zNear, zFar):
+    """Creates a matrix for a symetric perspective-view frustum.
+    :param float fovy: radian or degrees
+    :param float aspect: aspect ratio
+    :param float zNear: near plane
+    :param float zFar: far plane
+    :return: matrix
+    :rtype: Mat4x4"""
+
+    assert(aspect != 0)
+    assert(zFar != zNear)
+
+    rad = math.radians(fovy)
+    tanHalfFovy = math.tan((rad / 2))
+
+    result = Mat4x4(0.0)
+    result[0][0] = 1. / (aspect * tanHalfFovy)
+    result[1][1] = 1. / tanHalfFovy
+    result[2][2] = -(zFar + zNear) / (zFar - zNear)
+    result[2][3] = -1.
+    result[3][2] = -(2. * zFar * zNear) / (zFar - zNear)
+    return result
