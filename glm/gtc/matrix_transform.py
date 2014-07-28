@@ -24,6 +24,7 @@
 
 import math
 
+from glm.detail.func_geometric import *
 from glm.detail.type_mat4x4 import Mat4x4
 
 
@@ -72,7 +73,28 @@ def rotate(m, angle, axis):
     c = math.cos(a)
     s = math.sin(a)
 
-    axis = Vec3(normalize(v))
+    axis = Vec3(normalize(axis))
+    temp = (1. - c) * axis
+
+    rmat = Mat4x4()
+    rmat[0][0] = c + temp[0] * axis[0]
+    rmat[0][1] = 0 + temp[0] * axis[1] + s * axis[2]
+    rmat[0][2] = 0 + temp[0] * axis[2] - s * axis[1]
+
+    rmat[1][0] = 0 + temp[1] * axis[0] - s * axis[2]
+    rmat[1][1] = c + temp[1] * axis[1]
+    rmat[1][2] = 0 + temp[1] * axis[2] + s * axis[0]
+
+    rmat[2][0] = 0 + temp[2] * axis[0] + s * axis[1]
+    rmat[2][1] = 0 + temp[2] * axis[1] - s * axis[0]
+    rmat[2][2] = c + temp[2] * axis[2]
+
+    result = Mat4x4()
+    result[0] = m[0] * rmat[0][0] + m[1] * rmat[0][1] + m[2] * rmat[0][2]
+    result[1] = m[0] * rmat[1][0] + m[1] * rmat[1][1] + m[2] * rmat[1][2]
+    result[2] = m[0] * rmat[2][0] + m[1] * rmat[2][1] + m[2] * rmat[2][2]
+    result[3] = m[3]
+    return result
 
 def perspective(fovy, aspect, zNear, zFar):
     """Creates a matrix for a symetric perspective-view frustum.
