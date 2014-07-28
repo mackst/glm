@@ -23,8 +23,7 @@
 # SOFTWARE.
 
 from type_vec4 import Vec4
-from cgi import log
-from __builtin__ import int
+
 
 class Mat4x4(object):
 
@@ -359,3 +358,9 @@ class Mat4x4(object):
 
     def __neq__(self, other):
         return self.__value[0] != other[0] and self.__value[1] != other[1] and self.__value[2] != other[2] and self.__value[3] != other[3]
+
+    def __iter__(self):
+        return iter((self.__value[0].x, self.__value[1].x, self.__value[2].x, self.__value[3].x,
+                     self.__value[0].y, self.__value[1].y, self.__value[2].y, self.__value[3].y,
+                     self.__value[0].z, self.__value[1].z, self.__value[2].z, self.__value[3].z,
+                     self.__value[0].w, self.__value[1].w, self.__value[2].w, self.__value[3].w))
