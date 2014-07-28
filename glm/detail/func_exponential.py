@@ -23,8 +23,11 @@
 # SOFTWARE.
 
 
+import math
+
 from type_vec3 import Vec3
 from type_vec4 import Vec4
+
 
 
 def inversesqrt(x):
@@ -36,4 +39,21 @@ def inversesqrt(x):
     .. seealso::
         `GLSL inversesqrt man page <http://www.opengl.org/sdk/docs/manglsl/xhtml/inversesqrt.xml>`_
         `GLSL 4.20.8 specification, section 8.2 Exponential Functions <http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf>`_"""
-    pass
+    if isinstance(x, float):
+        return 1.0 / math.sqrt(x)
+    #elif isinstance(x, Vec2):
+        #tx = inversesqrt(x.x)
+        #ty = inversesqrt(x.y)
+        #return Vec2(tx, ty)
+    elif isinstance(x, Vec3):
+        tx = inversesqrt(x.x)
+        ty = inversesqrt(x.y)
+        tz = inversesqrt(x.z)
+        return Vec3(tx, ty, tz)
+    elif isinstance(x, Vec4):
+        tx = inversesqrt(x.x)
+        ty = inversesqrt(x.y)
+        tz = inversesqrt(x.z)
+        tw = inversesqrt(x.w)
+        return Vec3(tx, ty, tz, tw)
+
