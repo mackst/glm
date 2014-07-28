@@ -3,6 +3,11 @@
 from func_exponential import *
 from func_geometric import *
 
+vec3 = Vec3
+vec4 = Vec4
+# from type_vec3 import Vec3 as vec3
+# from type_vec4 import Vec4 as vec4
+from type_mat4x4 import Mat4x4 as mat4
 
 
 # The MIT License (MIT)
