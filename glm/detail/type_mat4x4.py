@@ -104,7 +104,7 @@ class Mat4x4(object):
                 elif isinstance(args[3], list) or isinstance(args[3], tuple):
                     v3 = Vec4(args[3])
 
-        self.__value = (v0, v1, v2, v3)
+        self.__value = [v0, v1, v2, v3]
 
     def __len__(self):
         return 4
