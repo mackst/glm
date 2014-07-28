@@ -22,3 +22,23 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+
+from func_exponential import *
+
+
+def normalize(x):
+    """Returns a vector in the same direction as x but with length of 1.
+    .. seealso::
+        `GLSL normalize man page <http://www.opengl.org/sdk/docs/manglsl/xhtml/normalize.xml>`_
+        `GLSL 4.20.8 specification, section 8.5 Geometric Functions <http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf>`_"""
+    if isinstance(x, float) or isinstance(x, int) or isinstance(x, long):
+        return -1.0 if x < 0.0 else 1.0
+    #elif isinstance(x, Vec2):
+        #sqr = x.x * x.x + x.y * x.y
+        #return x * inversesqrt(sqr)
+    elif isinstance(x, Vec3):
+        sqr = x.x * x.x + x.y * x.y + x.z * x.z
+        return x * inversesqrt(sqr)
+    elif isinstance(x, Vec4):
+        sqr = x.x * x.x + x.y * x.y + x.z * x.z + x.w * x.w
+        return x * inversesqrt(sqr)
