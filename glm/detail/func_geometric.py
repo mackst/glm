@@ -26,6 +26,29 @@
 from func_exponential import *
 
 
+def length(x):
+    """Returns the length of x, i.e., sqrt(x * x).
+
+    :param x: Floating-point vector types.
+
+    .. seealso::
+        `GLSL length man page <http://www.opengl.org/sdk/docs/manglsl/xhtml/length.xml>`_
+        `GLSL 4.20.8 specification, section 8.5 Geometric Functions <http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf>`_"""
+    # TODO: implement vec2 type
+#     if isinstance(x, Vec2):
+#         sqr = x.x * x.x + x.y * x.y
+#         return math.sqrt(sqr)
+    if isinstance(x, Vec3):
+        sqr = x.x * x.x + x.y * x.y + x.z * x.z
+        return math.sqrt(sqr)
+    elif isinstance(x, Vec4):
+        sqr = x.x * x.x + x.y * x.y + x.z * x.z + x.w * x.w
+        return math.sqrt(sqr)
+    elif isinstance(x, float) or isinstance(x, int) or isinstance(x, long):
+        return abs(x)
+    else:
+        raise TypeError('unsupport type %s' % type(x))
+
 def normalize(x):
     """Returns a vector in the same direction as x but with length of 1.
     .. seealso::
