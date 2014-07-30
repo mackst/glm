@@ -49,6 +49,29 @@ def length(x):
     else:
         raise TypeError('unsupport type %s' % type(x))
 
+def dot(x, y):
+    """Returns the dot product of x and y, i.e., result = x * y.
+
+    :param x: Floating-point vector types.
+
+    .. seealso::
+        `GLSL dot man page <http://www.opengl.org/sdk/docs/manglsl/xhtml/dot.xml>`_
+        `GLSL 4.20.8 specification, section 8.5 Geometric Functions <http://www.opengl.org/registry/doc/GLSLangSpec.4.20.8.pdf>`_"""
+    # TODO: implement vec2
+#     if isinstance(x, Vec2) and isinstance(y, Vec2):
+#         tmp = Vec2(x * y)
+#         return tmp.x + tmp.y
+    if isinstance(x, Vec3) and isinstance(y, Vec3):
+        tmp = Vec3(x * y)
+        return tmp.x + tmp.y + tmp.z
+    elif isinstance(x, Vec4) and isinstance(y, Vec4):
+        tmp = Vec4(x * y)
+        return (tmp.x + tmp.y) + (tmp.z + tmp.w)
+    elif isinstance(x, float) or isinstance(x, int) or isinstance(x, long):
+        return x * y
+    else:
+        raise TypeError('unsupport type %s' % type(x))
+
 def normalize(x):
     """Returns a vector in the same direction as x but with length of 1.
     .. seealso::
