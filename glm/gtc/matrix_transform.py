@@ -118,3 +118,39 @@ def perspective(fovy, aspect, zNear, zFar):
     result[2][3] = -1.
     result[3][2] = -(2. * zFar * zNear) / (zFar - zNear)
     return result
+
+def lookAt(eye, center, up):
+    """Creates a viewing matrix. The matrix maps the reference point to 
+    the negative z axis and the eye point to the origin. When a typical 
+    projection matrix is used, the center of the scene therefore maps to 
+    the center of the viewport. Similarly, the direction described by the 
+    UP vector projected onto the viewing plane is mapped to the positive y 
+    axis so that it points upward in the viewport. The UP vector must not be 
+    parallel to the line of sight from the eye point to the reference point.
+    :param Vec3 eye: Specifies the position of the eye point 
+    :param Vec3 center: Reference point indicating the center of the scene 
+    :param Vec3 up: Up direction
+    :rtype: Mat4x4"""
+
+    def cross( a, b):
+        return Vec3(a.y*b.z-a.z*b.y, -(a.x*b.z-a.z*b.x), a.x*b.y-a.y*b.x)
+
+    f = normalize(center - eye)
+    s = normalize(cross(f, up))
+    u = cross(s, f)
+
+    Result = Mat4x4(1.0)
+    Result[0][0] = s.x
+    Result[1][0] = s.y
+    Result[2][0] = s.z
+    Result[0][1] = u.x
+    Result[1][1] = u.y
+    Result[2][1] = u.z
+    Result[0][2] =-f.x
+    Result[1][2] =-f.y
+    Result[2][2] =-f.z
+    Result[3][0] =-dot(s, eye)
+    Result[3][1] =-dot(u, eye)
+    Result[3][2] = dot(f, eye)
+    return Result
+
