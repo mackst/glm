@@ -2,9 +2,17 @@
 
 from .func_exponential import *
 from .func_geometric import *
+from .type_vec3 import *
+from .type_vec4 import *
 
 vec3 = Vec3
+dvec3 = DVec3
+ivec3 = IVec3
+uvec3 = UVec3
 vec4 = Vec4
+dvec4 = DVec4
+ivec4 = IVec4
+uvec4 = UVec4
 # from type_vec3 import Vec3 as vec3
 # from type_vec4 import Vec4 as vec4
 from .type_mat4x4 import Mat4x4 as mat4
