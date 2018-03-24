@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2014-2017 Shi Chi(Mack Stone)
+# Copyright (c) 2014-2018 Shi Chi(Mack Stone)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,239 +22,75 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import numbers
 
-class Vec4(object):
+from . import type_vec
 
-    def __init__(self, *args, **kwargs):
+
+class Vec4(type_vec.BaseVec4):
+    """vec4 class number type: float"""
+
+    def __new__(cls, *args, **kwargs):
+        inList = []
         if kwargs:
-            self.x = kwargs.get('x', .0)
-            self.y = kwargs.get('y', .0)
-            self.z = kwargs.get('z', .0)
-            self.w = kwargs.get('w', .0)
+            inList.append(kwargs.get('x', 0))
+            inList.append(kwargs.get('y', 0))
+            inList.append(kwargs.get('z', 0))
+            inList.append(kwargs.get('w', 0))
         elif args:
-            lenArgs = len(args)
-            if lenArgs == 1:
-                inarg = args[0]
-                if isinstance(inarg, Vec4):
-                    self.x = inarg.x
-                    self.y = inarg.y
-                    self.z = inarg.z
-                    self.w = inarg.w
-                # TODO: implement vec3 and vec2
-                #if isinstance(inarg, Vec3):
-                elif isinstance(inarg, list) or isinstance(inarg, tuple):
+            argsLen = len(args)
+            if argsLen == 1:
+                arg0 = args[0]
+                if isinstance(arg0, type_vec.BaseVec4):
+                    inList = arg0.tolist()
+                elif isinstance(arg0, type_vec.BaseVec3):
+                    inList = arg0.tolist() + [0]
+                elif isinstance(arg0, type_vec.BaseVec2):
+                    inList = arg0.tolist() + [0, 0]
+                elif isinstance(arg0, type_vec.BaseVec1):
+                    inList = arg0.tolist() + [0, 0, 0]
+                elif isinstance(arg0, list) or isinstance(arg0, tuple):
                     il = []
-                    if len(inarg) == 1:
-                        il.append(inarg[0])
-                        il += [.0, .0, .0]
-                    elif len(inarg) == 2:
-                        il = list(inarg) + [.0, .0]
-                    elif len(inarg) == 3:
-                        il = list(inarg) + [.0,]
-                    elif len(inarg) == 4:
-                        il = inarg
-                    else:
-                        il = inarg[:4]
-                    self.x, self.y, self.z, self.w = il
-                elif isinstance(inarg, int) or isinstance(inarg, float) or isinstance(inarg, long):
-                    self.x = inarg
-                    self.y = inarg
-                    self.z = inarg
-                    self.w = inarg
-            elif lenArgs == 2:
-                # TODO: implement one of the arg is vec3
-                # or two vec2 as args
-                self.x, self.y = args
-                self.z = .0
-                self.w = .0
-            elif lenArgs == 3:
-                # TODO: implement one of the arg is vec2
-                self.x, self.y, self.z = args
-                self.w = .0
-            elif lenArgs == 4:
-                self.x, self.y, self.z, self.w = args
+                    arg0Len = len(arg0)
+                    if arg0Len == 1:
+                        il = list(arg0) + [0, 0, 0]
+                    elif arg0Len == 2:
+                        il = list(arg0) + [0, 0]
+                    elif arg0Len == 3:
+                        il = list(arg0) + [0]
+                    elif arg0Len == 4:
+                        il = list(arg0)
+                    inList = il
+                elif isinstance(arg0, numbers.Number):
+                    inList = [arg0, arg0, arg0, arg0]
+            elif argsLen == 2:
+                arg0, arg1 = args
+                if isinstance(arg0, type_vec.BaseVec3):
+                    inList = arg0.tolist() + [arg1]
+                elif isinstance(arg1, type_vec.BaseVec3):
+                    inList = [arg0] + arg1.tolist()
+                elif isinstance(arg0, type_vec.BaseVec2) and isinstance(arg1, type_vec.BaseVec2):
+                    inList = arg0.tolist() + arg1.tolist()
+                elif isinstance(arg0, numbers.Number) and isinstance(arg1, numbers.Number):
+                    inList = args + [0, 0]
+            elif argsLen == 3:
+                arg0, arg1, arg2 = args
+                if isinstance(arg0, numbers.Number) and isinstance(arg1, numbers.Number) and isinstance(arg2, numbers.Number):
+                    inList = list(args) + [0]
+                elif isinstance(arg0, type_vec.BaseVec2) and isinstance(arg1, numbers.Number) and isinstance(arg2, numbers.Number):
+                    inList = arg0.tolist() + [arg1, arg2]
+                elif isinstance(arg0, numbers.Number) and isinstance(arg1, type_vec.BaseVec2) and isinstance(arg2, numbers.Number):
+                    inList = [arg0] + arg1.tolist() + [arg2]
+                elif isinstance(arg0, numbers.Number) and isinstance(arg1, numbers.Number) and isinstance(arg2, type_vec.BaseVec2):
+                    inList = [arg0, arg1] + arg2.tolist()
+            elif argsLen == 4:
+                inList = args
             else:
-                self.x, self.y, self.z, self.w = args[:4]
-        else:
-            self.x = .0
-            self.y = .0
-            self.z = .0
-            self.w = .0
+                inList = args[:4]
+        if not args and not kwargs:
+            inList = [0, 0, 0, 0]
 
-    def __len__(self):
-        return 4
-
-    def __getitem__(self, index):
-        if index > 3 or index < -4:
-            raise IndexError('out of range')
-
-        if index == 0 or index == -4:
-            return self.x
-        elif index == 1 or index == -3:
-            return self.y
-        elif index == 2 or index == -2:
-            return self.z
-        elif index == 3 or index == -1:
-            return self.w
-        return super(Vec4, self).__getitem__(index)
-
-    def __setitem__(self, index, value):
-        if index > 3 or index < -4:
-            raise IndexError('out of range')
-
-        if index == 0 or index == -4:
-            self.x = value
-        elif index == 1 or index == -3:
-            self.y = value
-        elif index == 2 or index == -2:
-            self.z = value
-        elif index == 3 or index == -1:
-            self.w = value
-
-        #return super(Vec4, self).__setitem__(index, value)
-
-    def __iadd__(self, value):
-        if isinstance(value, Vec4):
-            self.x += value.x
-            self.y += value.y
-            self.z += value.z
-            self.w += value.w
-        else:
-            self.x += value
-            self.y += value
-            self.z += value
-            self.w += value
-        return self
-
-    def __isub__(self, value):
-        if isinstance(value, Vec4):
-            self.x -= value.x
-            self.y -= value.y
-            self.z -= value.z
-            self.w -= value.w
-        else:
-            self.x -= value
-            self.y -= value
-            self.z -= value
-            self.w -= value
-        return self
-
-    def __imul__(self, value):
-        if isinstance(value, Vec4):
-            self.x *= value.x
-            self.y *= value.y
-            self.z *= value.z
-            self.w *= value.w
-        else:
-            self.x *= value
-            self.y *= value
-            self.z *= value
-            self.w *= value
-        return self
-
-    def __idiv__(self, value):
-        if isinstance(value, Vec4):
-            self.x /= value.x
-            self.y /= value.y
-            self.z /= value.z
-            self.w /= value.w
-        else:
-            self.x /= value
-            self.y /= value
-            self.z /= value
-            self.w /= value
-        return self
-
-    def __itruediv__(self, value):
-        if isinstance(value, Vec4):
-            self.x /= float(value.x)
-            self.y /= float(value.y)
-            self.z /= float(value.z)
-            self.w /= float(value.w)
-        else:
-            self.x /= float(value)
-            self.y /= float(value)
-            self.z /= float(value)
-            self.w /= float(value)
-        return self
-
-    def __imod__(self, value):
-        if isinstance(value, Vec4):
-            self.x %= value.x
-            self.y %= value.y
-            self.z %= value.z
-            self.w %= value.w
-        else:
-            self.x %= value
-            self.y %= value
-            self.z %= value
-            self.w %= value
-        return self
-
-    def __iand__(self, value):
-        if isinstance(value, Vec4):
-            self.x &= value.x
-            self.y &= value.y
-            self.z &= value.z
-            self.w &= value.w
-        else:
-            self.x &= value
-            self.y &= value
-            self.z &= value
-            self.w &= value
-        return self
-
-    def __ior__(self, value):
-        if isinstance(value, Vec4):
-            self.x |= value.x
-            self.y |= value.y
-            self.z |= value.z
-            self.w |= value.w
-        else:
-            self.x |= value
-            self.y |= value
-            self.z |= value
-            self.w |= value
-        return self
-
-    def __ixor__(self, value):
-        if isinstance(value, Vec4):
-            self.x ^= value.x
-            self.y ^= value.y
-            self.z ^= value.z
-            self.w ^= value.w
-        else:
-            self.x ^= value
-            self.y ^= value
-            self.z ^= value
-            self.w ^= value
-        return self
-
-    def __ilshift__(self, value):
-        if isinstance(value, Vec4):
-            self.x <<= value.x
-            self.y <<= value.y
-            self.z <<= value.z
-            self.w <<= value.w
-        else:
-            self.x <<= value
-            self.y <<= value
-            self.z <<= value
-            self.w <<= value
-        return self
-
-    def __irshift__(self, value):
-        if isinstance(value, Vec4):
-            self.x >>= value.x
-            self.y >>= value.y
-            self.z >>= value.z
-            self.w >>= value.w
-        else:
-            self.x >>= value
-            self.y >>= value
-            self.z >>= value
-            self.w >>= value
-        return self
+        return type_vec.BaseVec4.__new__(cls, Vec4.dataType, inList)
 
     def __add__(self, value):
         if isinstance(value, Vec4):
@@ -318,12 +154,6 @@ class Vec4(object):
 
     def __neg__(self):
         return Vec4(-self.x, -self.y, -self.z, -self.w)
-
-    def __eq__(self, other):
-        return self.x == other.x and self.y == other.y and self.z == other.z and self.w == other.w
-
-    def __ne__(self, other):
-        return self.x != other.x and self.y != other.y and self.z != other.z and self.w != other.w
 
     def __mod__(self, value):
         if isinstance(value, Vec4):
@@ -396,68 +226,40 @@ class Vec4(object):
     def __invert__(self):
         return Vec4(~self.x, ~self.y, ~self.z, ~self.w)
 
-    @property
-    def r(self):
-        '''r attribute'''
-        return self.x
+    # def __nonzero__(self):
+    #     return self.x == 0 and self.y == 0 and self.z == 0 and self.w == 0
 
-    @r.setter
-    def r(self, value):
-        '''set r attribute'''
-        self.x = value
-
-    @property
-    def g(self):
-        '''g attribute'''
-        return self.y
-
-    @g.setter
-    def g(self, value):
-        '''set g attribute'''
-        self.y = value
-
-    @property
-    def b(self):
-        '''b attribute'''
-        return self.z
-
-    @b.setter
-    def b(self, value):
-        '''set b attribute'''
-        self.z = value
-
-    @property
-    def a(self):
-        '''a attribute'''
-        return self.w
-
-    @a.setter
-    def a(self, value):
-        '''set a attribute'''
-        self.w = value
-
-    s = r
-    t = g
-    p = b
-    q = a
-
-    def __iter__(self):
-        return iter((self.x, self.y, self.z, self.w))
-
-    def __nonzero__(self):
-        return self.x == 0 and self.y == 0 and self.z == 0 and self.w == 0
-
-    def __str__(self):
-        return "Vec4(%.3f, %.3f, %.3f, %.3f)" % (self.x, self.y, self.z, self.w)
-
-    __repr__ = __str__
+    # def __str__(self):
+    #     return "Vec4(%.3f, %.3f, %.3f, %.3f)" % (self.x, self.y, self.z, self.w)
+    #
+    # __repr__ = __str__
 
     # implement swizzle,
     # etc, v.xxxx, v.arg, v.qpst
     def __getattribute__(self, name):
-        # TODO: implement swizzle for vec2 and vec3
+        # TODO: implement swizzle for vec2
         if len(name) == 4:
             xyzw = (self.x, self.y, self.z, self.w) * 3
             return Vec4([xyzw['xyzwrgbastpq'.index(i)] for i in name])
+        elif len(name) == 3:
+            from glm.detail.type_vec3 import Vec3
+            xyzw = (self.x, self.y, self.z) * 3
+            return Vec3([xyzw['xyzwrgbastpq'.index(i)] for i in name])
 
         return super(Vec4, self).__getattribute__(name)
+
+
+class DVec4(Vec4):
+    """double type vec4"""
+    dataType = 'd'
+
+
+class IVec4(Vec4):
+    """signed int type vec4"""
+    dataType = 'i'
+
+
+class UVec4(Vec4):
+    """unsigned int type vec4"""
+    dataType = 'I'
+

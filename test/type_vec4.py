@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2014-2017 Shi Chi(Mack Stone)
+# Copyright (c) 2014-2018 Shi Chi(Mack Stone)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -24,7 +24,7 @@
 
 import unittest
 
-from glm.type_vec4 import Vec4
+from glm.detail import Vec4
 
 class TestVec4(unittest.TestCase):
 

@@ -24,8 +24,8 @@
 
 import unittest
 
-from glm.type_mat4x4 import Mat4x4
-from glm.type_vec4 import Vec4
+from glm import Mat4x4
+from glm import Vec4
 
 class TestMat4x4(unittest.TestCase):
 

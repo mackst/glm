@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-from func_exponential import *
-from func_geometric import *
+from .func_exponential import *
+from .func_geometric import *
 
 vec3 = Vec3
 vec4 = Vec4
 # from type_vec3 import Vec3 as vec3
 # from type_vec4 import Vec4 as vec4
-from type_mat4x4 import Mat4x4 as mat4
+from .type_mat4x4 import Mat4x4 as mat4
 
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2014-2017 Shi Chi(Mack Stone)
+# Copyright (c) 2014-2018 Shi Chi(Mack Stone)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal

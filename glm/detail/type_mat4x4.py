@@ -2,7 +2,7 @@
 
 # The MIT License (MIT)
 #
-# Copyright (c) 2014-2017 Shi Chi(Mack Stone)
+# Copyright (c) 2014-2018 Shi Chi(Mack Stone)
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-from type_vec4 import Vec4
+from .type_vec4 import Vec4
 
 
 class Mat4x4(object):
