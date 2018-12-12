@@ -364,3 +364,6 @@ class Mat4x4(object):
                      self.__value[0].y, self.__value[1].y, self.__value[2].y, self.__value[3].y,
                      self.__value[0].z, self.__value[1].z, self.__value[2].z, self.__value[3].z,
                      self.__value[0].w, self.__value[1].w, self.__value[2].w, self.__value[3].w))
+
+    def __repr__(self):
+        return "{0}\n{1}\n{2}\n{3}".format(*self.__value)
