@@ -21,8 +21,13 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
+import sys
 
 from .type_vec4 import Vec4
+
+
+if sys.version_info > (3, 0):
+    long = int
 
 
 class Mat4x4(object):
@@ -327,6 +332,9 @@ class Mat4x4(object):
                         self.__value[1][0] * value[0] + self.__value[1][1] * value[1] + self.__value[1][2] * value[2] + self.__value[1][3] * value[3],
                         self.__value[2][0] * value[0] + self.__value[2][1] * value[1] + self.__value[2][2] * value[2] + self.__value[2][3] * value[3],
                         self.__value[3][0] * value[0] + self.__value[3][1] * value[1] + self.__value[3][2] * value[2] + self.__value[3][3] * value[3])
+
+    __matmul__ = __mul__
+    __rmatmul__ = __rmul__
 
     def __div__(self, value):
         if isinstance(value, float) or isinstance(value, int) or isinstance(value, long):
