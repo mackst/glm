@@ -24,8 +24,8 @@
 
 import math
 
-from glm.detail.func_geometric import *
-from glm.detail.type_mat4x4 import Mat4x4
+from ..detail.func_geometric import *
+from ..detail.type_mat4x4 import Mat4x4
 
 
 def translate(m, v):
