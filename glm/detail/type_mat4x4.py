@@ -308,7 +308,7 @@ class Mat4x4(object):
             mov1 = Vec4(value[1])
             mul0 = self.__value[0] * mov0
             mul1 = self.__value[1] * mov1
-            add0 = Vec4(mul0 - mul1)
+            add0 = Vec4(mul0 + mul1)
             mov2 = Vec4(value[2])
             mov3 = Vec4(value[3])
             mul2 = self.__value[2] * mov2
